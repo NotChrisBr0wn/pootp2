@@ -1,32 +1,30 @@
 # gestor_stock.py
 
 class GestorStock:
-    """Classe que representa um gestor de carteira de uma ação específica."""
-
     def __init__(self, simbolo: str, nome: str, preco_atual=0.0, quantidade=0):
-        pass
+        self.simbolo = simbolo
+        self.nome = nome
+        self.preco_atual = preco_atual
+        self.quantidade = quantidade
+
+        self.preco_medio_compra = preco_atual if quantidade > 0 else 0.0
+        self.lucro_realizado = 0.0
 
     @property
     def simbolo(self) -> str:
-        """Devolve o símbolo da ação (ex: AAPL).
-        O símbolo deve ser guardado e devolvido sem espaços adicionais e em maiúsculas."""
-        pass
+        return self._simbolo
 
     @simbolo.setter
     def simbolo(self, valor: str):
-        """Define o símbolo da ação."""
-        pass
+        self._simbolo = valor.strip().upper()
 
     @property
     def nome(self) -> str:
-        """Devolve o nome da empresa.
-        O nome deve ser guardado e devolvido sem espaços adicionais e com as iniciais em maiúsculas (Title Case)."""
-        pass
+        return self._nome
 
     @nome.setter
     def nome(self, valor: str):
-        """Define o nome da empresa."""
-        pass
+        self._nome = valor.strip().title()
 
     @property
     def preco_atual(self) -> float:
