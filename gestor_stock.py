@@ -79,7 +79,19 @@ class GestorStock:
         """Realiza uma compra de ações.
         Aumenta a quantidade em carteira, estipula o novo preço médio de compra através da média pesada, e atualiza o preço de mercado atual.
         Retorna True no sucesso e False no caso de inputs (quantidade ou preco) não serem > 0."""
-        pass
+        if quantidade <= 0 or preco <= 0:
+            return False
+        
+        custo_total_anterior = self.preco_medio_compra * self.quantidade
+        custo_total_novo = preco * quantidade
+
+        nova_quantidade = self.quantidade + quantidade
+
+        self.preco_medio_compra = (custo_total_anterior + custo_total_novo) / (nova_quantidade)
+
+        self.quantidade = nova_quantidade
+        self.preco_atual = preco
+        return True
 
     def vender(self, quantidade: int, preco: float) -> bool:
         """Realiza uma venda de ações.
