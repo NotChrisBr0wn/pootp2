@@ -117,9 +117,14 @@ class GestorStock:
     def lucro_potencial(self) -> float:
         """Apurar rentabilidade não realizada ao valor de cotação presente.
         Diferença entre a avaliação do ativo aos preços de hoje, e a avaliação ao preço que foi comprado."""
-        pass
+        return self.quantidade * (self.preco_atual - self.preco_medio_compra)
 
     def receber_dividendo(self, dividendo_por_acao: float) -> float:
         """Apurar dividendos totais com o número de ações em posse, adicionando diretamente ao lucro_realizado da posição.
         Retorna o fundo depositado (que será 0.0 se for passado um valor inválido <= 0)."""
-        pass
+        if dividendo_por_acao <= 0:
+            return 0.0
+        
+        dividendo_recebido = self.quantidade * dividendo_por_acao
+        self.lucro_realizado += dividendo_recebido
+        return dividendo_recebido
