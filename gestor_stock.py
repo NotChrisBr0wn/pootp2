@@ -97,7 +97,18 @@ class GestorStock:
         """Realiza uma venda de ações.
         Diminui a quantidade em carteira, atualiza o preço atual, e soma a margem (lucro ou prejuízo) face ao preço_medio_compra ao histórico de lucro_realizado.
         Retorna True no sucesso e False no insucesso (seja por parâmetros errados <= 0 ou pela inexistência de posições suficientes)."""
-        pass
+        if quantidade <= 0 or preco <= 0 or quantidade > self.quantidade:
+            return False
+        
+        lucro = quantidade * (preco - self.preco_medio_compra)
+        self.lucro_realizado += lucro
+
+        self.quantidade -= quantidade
+        self.preco_atual = preco
+
+        if self.quantidade == 0:
+            self.preco_medio_compra = 0.0
+        return True
 
     def valor_total(self) -> float:
         """Calcula o valor total da posição na carteira (quantidade * preço_atual)."""
