@@ -7,8 +7,9 @@ class GestorStock:
         self.preco_atual = preco_atual
         self.quantidade = quantidade
 
-        self.preco_medio_compra = float(preco_atual) if quantidade > 0 else 0.0
         self.lucro_realizado = 0.0
+        self.preco_medio_compra = float(preco_atual) if quantidade > 0 else 0.0
+        
 
     @property
     def simbolo(self) -> str:
@@ -57,22 +58,22 @@ class GestorStock:
     @property
     def preco_medio_compra(self) -> float:
         """Devolve o preço médio de compra vigente de todo o stock."""
-        pass
+        return self._preco_medio_compra
 
     @preco_medio_compra.setter
     def preco_medio_compra(self, valor: float):
         """Define o preço médio de compra."""
-        pass
+        self._preco_medio_compra = float(valor)
 
     @property
     def lucro_realizado(self) -> float:
         """Devolve o lucro (ou prejuízo) consolidado ao longo de todo o histórico de transações de venda e dividendos fechados."""
-        pass
+        return self._lucro_realizado
 
     @lucro_realizado.setter
     def lucro_realizado(self, valor: float):
         """Define o lucro realizado."""
-        pass
+        self._lucro_realizado = float(valor)
 
     def comprar(self, quantidade: int, preco: float) -> bool:
         """Realiza uma compra de ações.
