@@ -7,7 +7,7 @@ class GestorStock:
         self.preco_atual = preco_atual
         self.quantidade = quantidade
 
-        self.preco_medio_compra = preco_atual if quantidade > 0 else 0.0
+        self.preco_medio_compra = float(preco_atual) if quantidade > 0 else 0.0
         self.lucro_realizado = 0.0
 
     @property
@@ -29,24 +29,30 @@ class GestorStock:
     @property
     def preco_atual(self) -> float:
         """Devolve o preço atual da ação."""
-        pass
+        return self._preco_atual
 
     @preco_atual.setter
     def preco_atual(self, valor: float):
         """Define o preço atual da ação. Deve ser positivo.
         Se for fornecido um valor negativo ou zero, o preço é colocado a 0."""
-        pass
+        if valor > 0:
+            self._preco_atual = float(valor)
+        else:
+            self._preco_atual = 0.0
 
     @property
     def quantidade(self) -> int:
         """Devolve a quantidade de ações em carteira."""
-        pass
+        return self._quantidade
 
     @quantidade.setter
     def quantidade(self, valor: int):
         """Define a quantidade de ações em carteira.
         Se for fornecido um valor negativo, a quantidade é colocada a 0."""
-        pass
+        if valor >= 0:
+            self._quantidade = int(valor)
+        else:
+            self._quantidade = 0
 
     @property
     def preco_medio_compra(self) -> float:
