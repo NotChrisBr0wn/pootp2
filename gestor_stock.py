@@ -1,4 +1,6 @@
 # gestor_stock.py
+import json
+from datetime import datetime
 
 class GestorStock:
     def __init__(self, simbolo: str, nome: str, preco_atual=0.0, quantidade=0):
@@ -6,10 +8,22 @@ class GestorStock:
         self.nome = nome
         self.preco_atual = preco_atual
         self.quantidade = quantidade
-
         self.lucro_realizado = 0.0
         self.preco_medio_compra = float(preco_atual) if quantidade > 0 else 0.0
         
+    # Ponto 1 (Histórico de Transações)
+        self.historico_transacoes = []
+        if quantidade > 0:
+            self._registar_transacao("compra", quantidade, preco_atual)
+    
+    def _registar_transacao(self, tipo, qtd, preco):
+        registo = {
+            "data": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "tipo": tipo,
+            "quantidade": qtd,
+            "preco": preco
+        }
+        self.historico_transacoes.append(registo)
 
     @property
     def simbolo(self) -> str:
@@ -88,9 +102,10 @@ class GestorStock:
         nova_quantidade = self.quantidade + quantidade
 
         self.preco_medio_compra = (custo_total_anterior + custo_total_novo) / (nova_quantidade)
-
         self.quantidade = nova_quantidade
         self.preco_atual = preco
+
+        self._registar_transacao("compra", quantidade, preco)
         return True
 
     def vender(self, quantidade: int, preco: float) -> bool:
@@ -108,6 +123,8 @@ class GestorStock:
 
         if self.quantidade == 0:
             self.preco_medio_compra = 0.0
+        
+        self._registar_transacao("venda", quantidade, preco)
         return True
 
     def valor_total(self) -> float:
