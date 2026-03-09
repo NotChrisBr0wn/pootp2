@@ -270,3 +270,10 @@ if __name__ == "__main__":
     print("Estado atual:")
     print(gestor)
     print(f"Transacoes registadas: {len(gestor.historico_transacoes)}")
+    
+    carteira = Carteira()
+    carteira.adicionar_acao(gestor)
+    carteira.adicionar_acao(GestorStock("MSFT", "Microsoft Corp.", 100.0, 5))
+
+    print("\nResumo da carteira:")
+    print(carteira)
