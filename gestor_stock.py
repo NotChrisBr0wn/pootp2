@@ -145,3 +145,40 @@ class GestorStock:
         dividendo_recebido = self.quantidade * dividendo_por_acao
         self.lucro_realizado += dividendo_recebido
         return dividendo_recebido
+
+    def save(self, caminho_ficheiro: str) -> None:
+        # Guarda o estado em json
+        dados = {
+            "simbolo": self.simbolo,
+            "nome": self.nome,
+            "preco_atual": self.preco_atual,
+            "quantidade": self.quantidade,
+            "lucro_realizado": self.lucro_realizado,
+            "preco_medio_compra": self.preco_medio_compra,
+            "historico_transacoes": self.historico_transacoes,
+        }
+
+        with open(caminho_ficheiro, "w", encoding="utf-8") as ficheiro:
+            json.dump(dados, ficheiro, ensure_ascii=False, indent=2)
+
+    @classmethod
+    def load(cls, caminho_ficheiro: str) -> "GestorStock":
+        # Carrega o estado do json
+        with open(caminho_ficheiro, "r", encoding="utf-8") as ficheiro:
+            dados = json.load(ficheiro)
+
+        gestor = cls(
+            dados["simbolo"],
+            dados["nome"],
+            dados.get("preco_atual", 0.0),
+            0,
+        )
+
+        gestor.quantidade = int(dados.get("quantidade", 0))
+        gestor.lucro_realizado = float(dados.get("lucro_realizado", 0.0))
+        gestor.preco_medio_compra = float(dados.get("preco_medio_compra", 0.0))
+
+        historico = dados.get("historico_transacoes", [])
+        gestor.historico_transacoes = historico if isinstance(historico, list) else []
+
+        return gestor
