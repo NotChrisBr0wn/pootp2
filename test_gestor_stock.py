@@ -136,6 +136,16 @@ def test_load_historico_invalido(tmp_path):
     assert gestor.quantidade == 5
     assert gestor.preco_medio_compra == 100.0
 
+# teste para verificar o metodo str (representação textual)
+def test_str_representacao(gestor):
+    texto = str(gestor)
+    assert "AAPL" in texto
+    assert "Apple Inc." in texto
+    assert "Preço Atual: 150.00" in texto
+    assert "Quantidade: 10" in texto
+    assert "Valor Total: 1500.00" in texto
+    assert "Lucro/Prejuízo: 0.00" in texto
+
 if __name__ == "__main__":
     # Permite executar o teste diretamente com `uv run test_gestor_stock.py`
     import sys

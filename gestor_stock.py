@@ -136,6 +136,16 @@ class GestorStock:
         Diferença entre a avaliação do ativo aos preços de hoje, e a avaliação ao preço que foi comprado."""
         return self.quantidade * (self.preco_atual - self.preco_medio_compra)
 
+    def __str__(self) -> str:
+        # 4 - Representação textual (str)
+        return (
+            f"{self.simbolo} | {self.nome} | "
+            f"Preço Atual: {self.preco_atual:.2f} | "
+            f"Quantidade: {self.quantidade} | "
+            f"Valor Total: {self.valor_total():.2f} | "
+            f"Lucro/Prejuízo: {self.lucro_potencial():.2f}"
+        )
+
     def receber_dividendo(self, dividendo_por_acao: float) -> float:
         """Apurar dividendos totais com o número de ações em posse, adicionando diretamente ao lucro_realizado da posição.
         Retorna o fundo depositado (que será 0.0 se for passado um valor inválido <= 0)."""
