@@ -181,6 +181,23 @@ def test_carteira_valor_total_e_lucro_global():
     assert carteira.valor_total() == 1700.0 + (15 * 110.0)
     assert carteira.lucro_global() == 200.0 + 200.0
 
+def test_str_carteira_vazia():
+    carteira = Carteira()
+    assert str(carteira) == "Carteira vazia"
+
+def test_str_carteira_com_posicoes():
+    carteira = Carteira()
+    carteira.adicionar_acao(GestorStock("AAPL", "Apple Inc.", 150.0, 10))
+    carteira.adicionar_acao(GestorStock("MSFT", "Microsoft Corp.", 100.0, 5))
+
+    texto = str(carteira)
+    assert "Carteira: 2 ação(oes)" in texto
+    assert "Valor Total:" in texto
+    assert "Lucro Global:" in texto
+    assert "Posições:" in texto
+    assert "- AAPL (Apple Inc.)" in texto
+    assert "- MSFT (Microsoft Corp.)" in texto
+
 # teste para verificar o metodo str (representação textual)
 def test_str_representacao(gestor):
     texto = str(gestor)

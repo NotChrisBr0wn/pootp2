@@ -241,6 +241,25 @@ class Carteira:
         # Soma lucro potencial e o lucro feito de todas as posições da carteira.
         return sum(acao.lucro_potencial() + acao.lucro_realizado for acao in self.acoes)
 
+    def __str__(self) -> str:
+        # Resumo da carteira
+        if not self.acoes:
+            return "Carteira vazia"
+
+        linhas = [
+            f"Carteira: {len(self.acoes)} ação(oes)",
+            f"Valor Total: {self.valor_total():.2f}",
+            f"Lucro Global: {self.lucro_global():.2f}",
+            "Posições:",
+        ]
+        for acao in self.acoes:
+            linhas.append(
+                f"- {acao.simbolo} ({acao.nome}) | Qtd: {acao.quantidade} | "
+                f"Preço: {acao.preco_atual:.2f} | Valor: {acao.valor_total():.2f}"
+            )
+
+        return "\n".join(linhas)
+
 
 if __name__ == "__main__":
     gestor = GestorStock("AAPL", "Apple Inc.", 150.0, 10)
