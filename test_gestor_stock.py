@@ -104,6 +104,38 @@ def test_receber_dividendo_invalido(gestor):
     assert montante == 0.0
     assert gestor.lucro_realizado == 0.0
 
+def test_save_json(tmp_path, gestor):
+    gestor.comprar(5, 180.0)
+    gestor.vender(3, 200.0)
+
+    caminho = tmp_path / "gestor.json"
+    gestor.save(str(caminho))
+
+    assert caminho.exists()
+
+    carregado = GestorStock.load(str(caminho))
+    assert carregado.simbolo == gestor.simbolo
+    assert carregado.nome == gestor.nome
+    assert carregado.preco_atual == gestor.preco_atual
+    assert carregado.quantidade == gestor.quantidade
+    assert carregado.preco_medio_compra == gestor.preco_medio_compra
+    assert carregado.lucro_realizado == gestor.lucro_realizado
+    assert carregado.historico_transacoes == gestor.historico_transacoes
+
+def test_load_historico_invalido(tmp_path):
+    caminho = tmp_path / "gestor_invalido.json"
+    caminho.write_text(
+        '{"simbolo":"AAPL","nome":"Apple Inc.","preco_atual":120.0,'
+        '"quantidade":5,"lucro_realizado":10.0,"preco_medio_compra":100.0,'
+        '"historico_transacoes":"invalido"}',
+        encoding="utf-8",
+    )
+
+    gestor = GestorStock.load(str(caminho))
+    assert gestor.historico_transacoes == []
+    assert gestor.quantidade == 5
+    assert gestor.preco_medio_compra == 100.0
+
 if __name__ == "__main__":
     # Permite executar o teste diretamente com `uv run test_gestor_stock.py`
     import sys
