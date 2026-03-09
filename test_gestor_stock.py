@@ -6,7 +6,7 @@
 # ]
 # ///
 import pytest
-from gestor_stock import GestorStock
+from gestor_stock import GestorStock, Carteira
 
 @pytest.fixture
 def gestor():
@@ -152,6 +152,34 @@ def test_verificar_alerta(gestor):
     assert gestor.verificar_alerta(160.0) is True
     assert gestor.verificar_alerta(200.0) is True
     assert gestor.verificar_alerta(-10.0) is False
+
+def test_carteira_adicionar_e_remover():
+    carteira = Carteira()
+    apple = GestorStock("AAPL", "Apple Inc.", 150.0, 10)
+
+    assert carteira.adicionar_acao(apple) is True
+    assert carteira.adicionar_acao(apple) is False
+    assert len(carteira.acoes) == 1
+
+    assert carteira.remover_acao("aapl") is True
+    assert carteira.remover_acao("AAPL") is False
+
+def test_carteira_valor_total_e_lucro_global():
+    carteira = Carteira()
+
+    aapl = GestorStock("AAPL", "Apple Inc.", 150.0, 10)
+    msft = GestorStock("MSFT", "Microsoft Corp.", 100.0, 20)
+
+    # Ajusta o preço de mercado para gerar lucro/prejuízo potencial.
+    aapl.preco_atual = 170.0  # potencial: (170-150)*10 = 200
+    msft.preco_atual = 90.0   # potencial: (90-100)*20 = -200
+    msft.vender(5, 110.0)     # realizado: (110-100)*5 = 50
+
+    carteira.adicionar_acao(aapl)
+    carteira.adicionar_acao(msft)
+
+    assert carteira.valor_total() == 1700.0 + (15 * 110.0)
+    assert carteira.lucro_global() == 200.0 + 200.0
 
 # teste para verificar o metodo str (representação textual)
 def test_str_representacao(gestor):

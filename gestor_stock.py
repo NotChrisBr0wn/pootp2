@@ -212,6 +212,36 @@ class GestorStock:
         return gestor
 
 
+class Carteira:
+    def __init__(self):
+        self.acoes: list[GestorStock] = []
+
+    def adicionar_acao(self, gestor: GestorStock) -> bool:
+        # Adiciona uma ação à carteira.
+        if any(acao.simbolo == gestor.simbolo for acao in self.acoes):
+            return False
+
+        self.acoes.append(gestor)
+        return True
+
+    def remover_acao(self, simbolo: str) -> bool:
+        # Remove uma ação pelo símbolo.
+        simbolo_limpo = simbolo.strip().upper()
+        for i, acao in enumerate(self.acoes):
+            if acao.simbolo == simbolo_limpo:
+                del self.acoes[i]
+                return True
+        return False
+
+    def valor_total(self) -> float:
+        # Mostra o valor total da carteira
+        return sum(acao.valor_total() for acao in self.acoes)
+
+    def lucro_global(self) -> float:
+        # Soma lucro potencial e o lucro feito de todas as posições da carteira.
+        return sum(acao.lucro_potencial() + acao.lucro_realizado for acao in self.acoes)
+
+
 if __name__ == "__main__":
     gestor = GestorStock("AAPL", "Apple Inc.", 150.0, 10)
     gestor.comprar(5, 180.0)
