@@ -7,6 +7,7 @@ class GestorStock:
         self.simbolo = simbolo
         self.nome = nome
         self.preco_atual = preco_atual
+        self.preco_alvo: float | None = None
         self.quantidade = quantidade
         self.lucro_realizado = 0.0
         self.preco_medio_compra = float(preco_atual) if quantidade > 0 else 0.0
@@ -155,12 +156,28 @@ class GestorStock:
         self.lucro_realizado += dividendo_recebido
         return dividendo_recebido
 
+    def definir_preco_alvo(self, preco_alvo: float) -> bool:
+        # Alerta de preço alvo
+        if preco_alvo <= 0:
+            return False
+
+        self.preco_alvo = float(preco_alvo)
+        return True
+
+    def verificar_alerta(self, preco_mercado: float) -> bool:
+        # Verifica se o alerta foi antingido 
+        if self.preco_alvo is None or preco_mercado <= 0:
+            return False
+
+        return preco_mercado >= self.preco_alvo
+
     def save(self, caminho_ficheiro: str) -> None:
         # Guarda o estado em json
         dados = {
             "simbolo": self.simbolo,
             "nome": self.nome,
             "preco_atual": self.preco_atual,
+            "preco_alvo": self.preco_alvo,
             "quantidade": self.quantidade,
             "lucro_realizado": self.lucro_realizado,
             "preco_medio_compra": self.preco_medio_compra,
@@ -186,6 +203,8 @@ class GestorStock:
         gestor.quantidade = int(dados.get("quantidade", 0))
         gestor.lucro_realizado = float(dados.get("lucro_realizado", 0.0))
         gestor.preco_medio_compra = float(dados.get("preco_medio_compra", 0.0))
+        preco_alvo = dados.get("preco_alvo", None)
+        gestor.preco_alvo = float(preco_alvo) if preco_alvo is not None else None
 
         historico = dados.get("historico_transacoes", [])
         gestor.historico_transacoes = historico if isinstance(historico, list) else []

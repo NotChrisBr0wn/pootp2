@@ -136,6 +136,23 @@ def test_load_historico_invalido(tmp_path):
     assert gestor.quantidade == 5
     assert gestor.preco_medio_compra == 100.0
 
+def test_definir_preco_alvo_valido(gestor):
+    sucesso = gestor.definir_preco_alvo(175.5)
+    assert sucesso is True
+    assert gestor.preco_alvo == 175.5
+
+def test_definir_preco_alvo_invalido(gestor):
+    sucesso = gestor.definir_preco_alvo(-1)
+    assert sucesso is False
+    assert gestor.preco_alvo is None
+
+def test_verificar_alerta(gestor):
+    gestor.definir_preco_alvo(160.0)
+    assert gestor.verificar_alerta(159.99) is False
+    assert gestor.verificar_alerta(160.0) is True
+    assert gestor.verificar_alerta(200.0) is True
+    assert gestor.verificar_alerta(-10.0) is False
+
 # teste para verificar o metodo str (representação textual)
 def test_str_representacao(gestor):
     texto = str(gestor)
