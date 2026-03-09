@@ -12,7 +12,7 @@ class GestorStock:
         self.preco_medio_compra = float(preco_atual) if quantidade > 0 else 0.0
         
     # Ponto 1 (Histórico de Transações)
-        self.historico_transacoes = []
+        self.historico_transacoes: list[dict] = []
         if quantidade > 0:
             self._registar_transacao("compra", quantidade, preco_atual)
     
