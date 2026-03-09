@@ -137,13 +137,12 @@ class GestorStock:
         return self.quantidade * (self.preco_atual - self.preco_medio_compra)
 
     def __str__(self) -> str:
-        # 4 - Representação textual (str)
         return (
-            f"{self.simbolo} | {self.nome} | "
-            f"Preço Atual: {self.preco_atual:.2f} | "
-            f"Quantidade: {self.quantidade} | "
-            f"Valor Total: {self.valor_total():.2f} | "
-            f"Lucro/Prejuízo: {self.lucro_potencial():.2f}"
+            f"[{self.simbolo}] {self.nome}\n"
+            f"- Preço Atual: {self.preco_atual:.2f}\n"
+            f"- Quantidade: {self.quantidade}\n"
+            f"- Valor Total: {self.valor_total():.2f}\n"
+            f"- Lucro/Prejuízo: {self.lucro_potencial():.2f}"
         )
 
     def receber_dividendo(self, dividendo_por_acao: float) -> float:
@@ -192,3 +191,14 @@ class GestorStock:
         gestor.historico_transacoes = historico if isinstance(historico, list) else []
 
         return gestor
+
+
+if __name__ == "__main__":
+    gestor = GestorStock("AAPL", "Apple Inc.", 150.0, 10)
+    gestor.comprar(5, 180.0)
+    gestor.vender(3, 200.0)
+    gestor.receber_dividendo(1.2)
+
+    print("Estado atual:")
+    print(gestor)
+    print(f"Transacoes registadas: {len(gestor.historico_transacoes)}")
